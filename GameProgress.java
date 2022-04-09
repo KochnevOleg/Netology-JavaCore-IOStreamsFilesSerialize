@@ -31,23 +31,17 @@ public class GameProgress implements Serializable {
     }
 
     public void saveGame(String path) {
-        try {
-            FileOutputStream fos = new FileOutputStream(path);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-
+        try (FileOutputStream fos = new FileOutputStream(path);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(this);
-
-            oos.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void archiveFiles(String zipPath, String[] filenames, String... filePath) {
-        try {
-            FileOutputStream fos = new FileOutputStream(zipPath);
-            ZipOutputStream zos = new ZipOutputStream(fos);
+        try (FileOutputStream fos = new FileOutputStream(zipPath);
+             ZipOutputStream zos = new ZipOutputStream(fos)) {
 
             for (int i = 0; i < filePath.length; i++) {
                 FileInputStream fis = new FileInputStream(filePath[i]);
@@ -60,8 +54,6 @@ public class GameProgress implements Serializable {
                 zos.closeEntry();
                 fis.close();
             }
-
-            zos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
